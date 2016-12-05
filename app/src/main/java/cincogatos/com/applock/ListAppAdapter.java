@@ -2,9 +2,12 @@ package cincogatos.com.applock;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +25,16 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     public static final int ORDERBY_BLOKED_DES = 3;
 
 
+    /*
+    * IMPORTANTE: hay que plantearse el usar un Sigleton para la lista de aplicaciones, ya que se va a cambiar
+    * el estado de bloqueado cada vez que se pulsa el icono del candado. Además hay que tener cuidado cuando
+    * permitamos el filtrado de datos ya que las posiciones de la lista local puede que no se correspondan
+    * con las de la lista completa de las app. Una posible solucion es utilizar el packageName de cada objeto
+    * de la clase AppInfo (si es que es unico que no lo se) y hacer un metodo a la lista que permita localizar
+    * un objeto por su packageName. De este modo buscamos el objeto antes de cambiar el estado de bloqueado
+    * y así nos aseguramos de estar cambiando el estado del objeto correcto.
+    *
+    * */
     //Construct
     public ListAppAdapter(Context context, ArrayList<AppInfo> appInfoList) {
         super(context, R.layout.item_list_app);
@@ -32,10 +45,10 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
     //Overray Methods
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
 
         View rootView = convertView;
-        AppInfoHolder holder;
+        final AppInfoHolder holder;
 
         if(convertView == null){
 
@@ -63,8 +76,36 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
             holder.imvPadLock.setImageResource(R.drawable.padlock_open);
         }
 
+        holder.imvPadLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final int pos = position;
+                final int POST_DELAYED = 1000;
+                Animation aninInvisible = AnimationUtils.loadAnimation(context, R.anim.invisible_image);
+                final Animation aninVisible = AnimationUtils.loadAnimation(context, R.anim.visible_image);
+                holder.imvPadLock.startAnimation(aninInvisible);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
+                        AppInfo appInfo = localList.get(pos);
+                        appInfo.setBlocked(!appInfo.isBlocked());
+                        holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
+                        holder.imvPadLock.startAnimation(aninVisible);
+
+                    }
+                }, POST_DELAYED);
+            }
+        });
+
         return rootView;
     }
+
+
 
     //Instance Methods
     public int orderBy(int typeOrder){

@@ -21,11 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Lock_Activity"></activity>
-        <service android:name=".ListeningService"
-            android:exported="false">
+        <activity android:name=".Lock_Activity" />
 
-        </service>
+        <service
+            android:name=".ListeningService"
+            android:exported="false"></service>
+
+        <activity android:name=".EncriptActivity"></activity>
     </application>
 
 </manifest>

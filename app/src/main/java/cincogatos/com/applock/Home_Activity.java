@@ -26,4 +26,9 @@ public class Home_Activity extends AppCompatActivity {
         Intent intent = new Intent(this,ListeningService.class);
         stopService(intent);
     }
+    public void testFileUtils(View view){
+
+        startActivity(new Intent(Home_Activity.this, EncriptActivity.class));
+    }
+
 }

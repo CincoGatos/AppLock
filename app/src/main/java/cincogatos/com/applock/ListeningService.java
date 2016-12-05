@@ -9,9 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-/**
- * Created by Amador on 05/12/2016.
- */
+
 public class ListeningService extends Service {
 
     private boolean active;

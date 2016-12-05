@@ -3,8 +3,8 @@ package cincogatos.com.applock;
 
 public class FileUtils {
 
-    private static final String PASSWORD_FILE = "";
-    private static final String APP_FILE = "";
+    private static final String PASSWORD_FILE = "shuieriuuirehguib";
+    private static final String APP_FILE = "sjhdfbiojrfoijhbnoi";
     public static final int PASSWORD_FILE_CODE = 0;
     public static final int PASSWORD_APP_CODE = 1;
 

@@ -2,46 +2,65 @@ package cincogatos.com.applock;
 
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
-import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InstalledApps {
 
 
     private ArrayList<AppInfo> installedApps;
-    private ArrayList<String> blockedApps;
+    private static ArrayList<String> blockedApps = new ArrayList<>();
     private Context context;
-
 
 
     public InstalledApps(Context context){
 
         this.context = context;
+        getBlockedApps();
+        installedApps = getInstalledApps(false);
     }
 
-    private ArrayList<AppInfo> getInstalledApps(boolean blocked){
+    public ArrayList<AppInfo> getInstalledApplications(){
 
-        return null;
+        return installedApps;
     }
 
-    public ArrayList<AppInfo> getInstalledApps(){
+    private ArrayList<AppInfo> getInstalledApps(boolean getSysPackages){
+        final PackageManager pm = context.getPackageManager();
+        ArrayList<AppInfo> res = new ArrayList<AppInfo>();
+        List<PackageInfo> packs = pm.getInstalledPackages(0);
+        boolean blocked;
+        for(int i=0;i<packs.size();i++) {
+            blocked = false;
+            PackageInfo p = packs.get(i);
+            if ((!getSysPackages) && (p.versionName == null)) {
+                continue ;
+            }
+            AppInfo newAppInfo = new AppInfo();
+            newAppInfo.setAppname(p.applicationInfo.loadLabel(pm).toString());
+            newAppInfo.setPackageName(p.packageName);
+            newAppInfo.setIcon(p.applicationInfo.loadIcon(context.getPackageManager()));
+            newAppInfo.setIntent(pm.getLaunchIntentForPackage(p.packageName));
+            if (blockedApps.contains(newAppInfo.getPackageName()))
+                blocked = true;
+            newAppInfo.setBlocked(blocked);
+            res.add(newAppInfo);
+        }
+        return res;
+    }
 
-          return null;
-      }
+    private void getBlockedApps(){
 
-    private ArrayList<String> getBlockedApps(){
+        //TODO Desencriptar fichero, recorrer y devolver
+        blockedApps.add("yrj.ayudasordomudo");
 
-        return null;
     }
 
     public static boolean isBlocked(String packageName){
 
-        return false;
+        return blockedApps.contains(packageName);
     }
-
-
-
-
-
 }

@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    android:padding="@dimen/padding_card"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4dp"
+    card_view:cardUseCompatPadding="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
 
 
+       <ImageView
+           android:id="@+id/imvAppIcon"
+           android:layout_marginLeft="@dimen/wiget_margin_left"
+           android:layout_marginTop="@dimen/wiget_margin_top"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@mipmap/ic_app_provisional"
+           />
+
+       <TextView
+           android:id="@+id/txvAppName"
+           android:layout_marginLeft="@dimen/wiget_margin_left"
+           android:text="Nombre de la app"
+           android:textStyle="bold"
+           android:textColor="#000"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toRightOf="@id/imvAppIcon"
+           android:layout_marginTop="@dimen/wiget_margin_top_aling"
+           />
+
+       <ImageView
+           android:id="@+id/imvPadlock"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/padlock_open"
+           android:layout_alignParentRight="true"
+           android:layout_marginRight="@dimen/wiget_margin_rigth"
+           android:layout_marginTop="@dimen/wiget_margin_top"
+           />
+
+   </RelativeLayout>
 
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

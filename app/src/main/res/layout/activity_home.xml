@@ -7,22 +7,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="3"
     tools:context="cincogatos.com.applock.Home_Activity">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Iniciar servicio"
-        android:onClick="startService"/>
+        android:layout_weight="1"
+        android:onClick="startService"
+        android:text="Iniciar servicio" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parar servicio"
-        android:onClick="stopService"/>
+        android:layout_weight="1"
+        android:onClick="stopService"
+        android:text="Parar servicio" />
 
     <Button
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Probar encriptado"
-           android:onClick="testFileUtils"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="testFileUtils"
+        android:text="Probar lista" />
 </LinearLayout>

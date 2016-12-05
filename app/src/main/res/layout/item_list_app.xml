@@ -18,8 +18,8 @@
            android:id="@+id/imvAppIcon"
            android:layout_marginLeft="@dimen/wiget_margin_left"
            android:layout_marginTop="@dimen/wiget_margin_top"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_width="@dimen/icon_app_dimen"
+           android:layout_height="@dimen/icon_app_dimen"
            android:src="@mipmap/ic_app_provisional"
            />
 

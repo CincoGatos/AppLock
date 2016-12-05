@@ -27,7 +27,7 @@
             android:name=".ListeningService"
             android:exported="false"></service>
 
-        <activity android:name=".EncriptActivity"></activity>
+        <activity android:name=".ProvisionalListActivity"></activity>
     </application>
 
 </manifest>

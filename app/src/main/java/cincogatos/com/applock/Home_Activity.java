@@ -28,7 +28,7 @@ public class Home_Activity extends AppCompatActivity {
     }
     public void testFileUtils(View view){
 
-        startActivity(new Intent(Home_Activity.this, EncriptActivity.class));
+        startActivity(new Intent(Home_Activity.this, ProvisionalListActivity.class));
     }
 
 }

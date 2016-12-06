@@ -5,7 +5,8 @@
     <dimen name="wiget_margin_left">10dp</dimen>
     <dimen name="wiget_margin_top">10dp</dimen>
     <dimen name="padding_card">10dp</dimen>
-    <dimen name="wiget_margin_top_aling">25dp</dimen>
+    <dimen name="wiget_margin_top_aling">10dp</dimen>
     <dimen name="wiget_margin_rigth">10dp</dimen>
     <dimen name="icon_app_dimen">50dp</dimen>
+    <dimen name="wiget_margin_bot">10dp</dimen>
 </resources>

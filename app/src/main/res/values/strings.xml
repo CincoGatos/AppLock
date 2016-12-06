@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AppLock</string>
+    <string name="system_app">Aplicación del sistema</string>
+    <string name="non_system_app">Aplicación de terceros</string>
 </resources>

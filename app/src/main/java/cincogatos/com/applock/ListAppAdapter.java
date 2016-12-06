@@ -56,7 +56,8 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
             rootView = LayoutInflater.from(this.context).inflate(R.layout.item_list_app, null);
             holder.imvAppIcon = (ImageView)rootView.findViewById(R.id.imvAppIcon);
             holder.imvPadLock = (ImageView)rootView.findViewById(R.id.imvPadlock);
-            holder.txvNameIcon = (TextView)rootView.findViewById(R.id.txvAppName);
+            holder.txvAppName = (TextView)rootView.findViewById(R.id.txvAppName);
+            holder.txvAppSystem = (TextView)rootView.findViewById(R.id.txvAppSystem);
             rootView.setTag(holder);
 
         }else{
@@ -65,7 +66,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
         }
 
         holder.imvAppIcon.setImageDrawable(this.localList.get(position).getIcon());
-        holder.txvNameIcon.setText(this.localList.get(position).getAppname());
+        holder.txvAppName.setText(this.localList.get(position).getAppname());
 
         if(this.localList.get(position).isBlocked()){
 
@@ -74,6 +75,15 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
         }else{
 
             holder.imvPadLock.setImageResource(R.drawable.padlock_open);
+        }
+
+        if(this.localList.get(position).isSystemApp()){
+
+            holder.txvAppSystem.setText(R.string.system_app);
+
+        }else{
+
+            holder.txvAppSystem.setText(R.string.non_system_app);
         }
 
         holder.imvPadLock.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +126,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     class AppInfoHolder{
 
         ImageView imvAppIcon, imvPadLock;
-        TextView txvNameIcon;
+        TextView txvAppName;
+        TextView txvAppSystem;
     }
 }

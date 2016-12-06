@@ -22,6 +22,9 @@ public class AppInfo {
     private String appname;
     private String packageName;
     private Drawable icon;
+
+
+    private boolean systemApp;
     private Intent intent;
     private boolean blocked;
 
@@ -76,6 +79,14 @@ public class AppInfo {
         this.icon = icon;
     }
 
+    public boolean isSystemApp() {
+        return systemApp;
+    }
+
+    public void setSystemApp(boolean systemApp) {
+        this.systemApp = systemApp;
+    }
+
     public Intent getIntent() {
         return intent;
     }
@@ -93,12 +104,13 @@ public class AppInfo {
     }
 
     //Construct
-    public AppInfo(String appname, String packageName, Drawable icon, Intent intent, boolean blocked) {
-          this.appname = appname;
-          this.packageName = packageName;
-          this.icon = icon;
-          this.intent = intent;
-          this.blocked = blocked;
+    public AppInfo(String appname, String packageName, Drawable icon,boolean systemApp, Intent intent, boolean blocked) {
+        this.appname = appname;
+        this.packageName = packageName;
+        this.icon = icon;
+        this.systemApp = systemApp;
+        this.intent = intent;
+        this.blocked = blocked;
       }
 
     public AppInfo(){

@@ -2,8 +2,10 @@ package cincogatos.com.applock;
 
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class InstalledApps {
 
         this.context = context;
         getBlockedApps();
-        installedApps = getInstalledApps(false);
+        installedApps = getInstalledApps();
     }
 
     public ArrayList<AppInfo> getInstalledApplications(){
@@ -28,7 +30,7 @@ public class InstalledApps {
         return installedApps;
     }
 
-    private ArrayList<AppInfo> getInstalledApps(boolean getSysPackages){
+    private ArrayList<AppInfo> getInstalledApps(){
         final PackageManager pm = context.getPackageManager();
         ArrayList<AppInfo> res = new ArrayList<AppInfo>();
         List<PackageInfo> packs = pm.getInstalledPackages(0);
@@ -36,10 +38,10 @@ public class InstalledApps {
         for(int i=0;i<packs.size();i++) {
             blocked = false;
             PackageInfo p = packs.get(i);
-            if ((!getSysPackages) && (p.versionName == null)) {
-                continue ;
-            }
             AppInfo newAppInfo = new AppInfo();
+            if((p.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
+                newAppInfo.setSystemApp(true);
+            }
             newAppInfo.setAppname(p.applicationInfo.loadLabel(pm).toString());
             newAppInfo.setPackageName(p.packageName);
             newAppInfo.setIcon(p.applicationInfo.loadIcon(context.getPackageManager()));
@@ -49,6 +51,7 @@ public class InstalledApps {
             newAppInfo.setBlocked(blocked);
             res.add(newAppInfo);
         }
+        Log.d("TAG", String.valueOf(res.size()));
         return res;
     }
 

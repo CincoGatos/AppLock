@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class ListeningService extends Service {
 
+    private final static int INTERVAL_TIME = 100;
     private boolean active;
 
     private void checkApplication(){
@@ -19,26 +20,14 @@ public class ListeningService extends Service {
         while (active) {
             try {
                 app = AppInfo.getForegroundApp(ListeningService.this);
-                Log.d("TAG",app);
                 if (InstalledApps.isBlocked(app)) {
-                    Log.d("TAG","App bloqueada");
                     openLocker(app);
                 }
-                Thread.sleep(100);
+                Thread.sleep(INTERVAL_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static void showHomeScreen(){
-        Log.d("TAG","No se ha desbloqueado");
-
-    }
-
-    public static void openApp(){
-        Log.d("TAG","Desbloqueado correctamente");
-
     }
 
     private void openLocker(String packageName){

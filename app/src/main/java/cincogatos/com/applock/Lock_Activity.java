@@ -25,20 +25,35 @@ public class Lock_Activity extends AppCompatActivity {
         btTrue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                ListeningService.openApp();
+                openApp();
             }
         });
 
         btFalse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startHomescreen=new Intent(Intent.ACTION_MAIN);
-                startHomescreen.addCategory(Intent.CATEGORY_HOME);
-                startHomescreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(startHomescreen);
-                ListeningService.showHomeScreen();
+                //Error con la contraseña
             }
         });
+    }
+
+    private void openApp(){
+        Intent intent = new Intent(this,ListeningService.class);
+        intent.putExtra("appunlocked", app);
+        startService(intent);
+        finish();
+        //TODO se vuelve a ejecutar el bloqueo al cerrar esta
+    }
+
+    private void showHomeScreen(){
+        Intent startHomescreen=new Intent(Intent.ACTION_MAIN);
+        startHomescreen.addCategory(Intent.CATEGORY_HOME);
+        startHomescreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(startHomescreen);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showHomeScreen();
     }
 }

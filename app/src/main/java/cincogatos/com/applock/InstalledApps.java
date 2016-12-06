@@ -15,6 +15,7 @@ public class InstalledApps {
 
     private ArrayList<AppInfo> installedApps;
     private static ArrayList<String> blockedApps = new ArrayList<>();
+    private static ArrayList<String> unlockedApps = new ArrayList<>();
     private Context context;
 
 
@@ -63,7 +64,16 @@ public class InstalledApps {
     }
 
     public static boolean isBlocked(String packageName){
+        boolean result = blockedApps.contains(packageName);
 
-        return blockedApps.contains(packageName);
+        if (result) {
+            result = !unlockedApps.contains(packageName);
+        }
+        return result;
+    }
+
+    public static void unlockApp(String packageName) {
+        if (!unlockedApps.contains(packageName))
+            unlockedApps.add(packageName);
     }
 }

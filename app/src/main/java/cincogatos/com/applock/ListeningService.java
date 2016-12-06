@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -60,6 +61,13 @@ public class ListeningService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Bundle args = intent.getExtras();
+        if (args != null) {
+            String app = args.getString("appunlocked", "");
+            if (app != "") {
+                InstalledApps.unlockApp(app);
+            }
+        }
         active = true;
         if (!thread.isAlive())
             thread.start();

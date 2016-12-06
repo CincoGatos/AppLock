@@ -26,6 +26,8 @@ public class InstalledApps {
         installedApps = getInstalledApps();
     }
 
+    
+
     public ArrayList<AppInfo> getInstalledApplications(){
 
         return installedApps;

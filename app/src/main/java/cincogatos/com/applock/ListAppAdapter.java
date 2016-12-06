@@ -3,6 +3,7 @@ package cincogatos.com.applock;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
@@ -21,8 +23,9 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     private ArrayList<AppInfo> localList;
     public static final int ORDERBY_NAME_ASC = 0;
     public static final int ORDERBY_NAME_DES = 1;
-    public static final int ORDERBY_BLOKED_ASC = 2;
-    public static final int ORDERBY_BLOKED_DES = 3;
+    public static final int ONLY_BLOKED = 0;
+    public static final int ONLY_UNBLOKED = 1;
+    public static final int ALL_APP = 2;
 
 
     /*
@@ -39,8 +42,8 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     public ListAppAdapter(Context context, ArrayList<AppInfo> appInfoList) {
         super(context, R.layout.item_list_app);
         this.context = context;
-        this.localList = new ArrayList<AppInfo>(appInfoList);
-        addAll(appInfoList);
+        this.localList = appInfoList;
+        addAll(new ArrayList<AppInfo>(appInfoList));
     }
 
     //Overray Methods
@@ -65,10 +68,10 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
             holder = (AppInfoHolder)rootView.getTag();
         }
 
-        holder.imvAppIcon.setImageDrawable(this.localList.get(position).getIcon());
-        holder.txvAppName.setText(this.localList.get(position).getAppname());
+        holder.imvAppIcon.setImageDrawable(getItem(position).getIcon());
+        holder.txvAppName.setText(getItem(position).getAppname());
 
-        if(this.localList.get(position).isBlocked()){
+        if(getItem(position).isBlocked()){
 
             holder.imvPadLock.setImageResource(R.drawable.padlock_close);
 
@@ -77,7 +80,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
             holder.imvPadLock.setImageResource(R.drawable.padlock_open);
         }
 
-        if(this.localList.get(position).isSystemApp()){
+        if(getItem(position).isSystemApp()){
 
             holder.txvAppSystem.setText(R.string.system_app);
 
@@ -102,7 +105,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
                     public void run() {
 
                         //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
-                        AppInfo appInfo = localList.get(pos);
+                        AppInfo appInfo = getItem(pos);
                         appInfo.setBlocked(!appInfo.isBlocked());
                         holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
                         holder.imvPadLock.startAnimation(aninVisible);
@@ -118,10 +121,87 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
 
     //Instance Methods
-    public int orderBy(int typeOrder){
+    public void orderBy(int typeOrder){
 
-        return 0;
+
+        switch (typeOrder){
+
+            case ORDERBY_NAME_ASC:
+                sort(AppInfo.NAME_COMPARATOR_ASC);
+                break;
+            case ORDERBY_NAME_DES:
+                sort(AppInfo.NAME_COMPARATOR_DES);
+                break;
+        }
     }
+
+    public void filterBy(int typeFilter){
+
+        switch (typeFilter){
+
+            case ONLY_BLOKED:
+                loadBlokedApps();
+                break;
+            case ONLY_UNBLOKED:
+                loadUnBlokedApps();
+                break;
+            case ALL_APP:
+                loadApps();
+                break;
+
+        }
+
+
+    }
+
+    public void filerBy(String filterText){
+
+
+            clear();
+
+            for (AppInfo tmp : this.localList) {
+
+                if (tmp.getAppname().toUpperCase().startsWith(filterText.toUpperCase())) {
+
+                    add(tmp);
+                }
+            }
+
+    }
+
+    private void loadApps() {
+
+        clear();
+        addAll(this.localList);
+    }
+
+    private void loadUnBlokedApps() {
+
+        clear();
+
+        for(AppInfo tmp: this.localList){
+
+            if (!tmp.isBlocked()){
+
+                add(tmp);
+            }
+        }
+
+    }
+
+    private void loadBlokedApps() {
+
+        clear();
+
+        for(AppInfo tmp: this.localList){
+
+            if (tmp.isBlocked()){
+
+                add(tmp);
+            }
+        }
+    }
+
 
     class AppInfoHolder{
 

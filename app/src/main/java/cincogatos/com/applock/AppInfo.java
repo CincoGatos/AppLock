@@ -15,7 +15,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 
-public class AppInfo {
+public class AppInfo implements Comparable<AppInfo> {
 
 
     //Fields
@@ -29,28 +29,16 @@ public class AppInfo {
     private boolean blocked;
 
     //Comparators
-    public static final Comparator<AppInfo> BLOCKED_COMPARATOR_ASC = new Comparator<AppInfo>() {
-        @Override
-        public int compare(AppInfo appInfo, AppInfo t1) {
-            return 0;
-        }
-    };
-    public static final Comparator<AppInfo> BLOCKED_COMPARATOR_DES = new Comparator<AppInfo>() {
-           @Override
-           public int compare(AppInfo appInfo, AppInfo t1) {
-               return 0;
-           }
-       };
     public static final Comparator<AppInfo> NAME_COMPARATOR_ASC = new Comparator<AppInfo>() {
               @Override
               public int compare(AppInfo appInfo, AppInfo t1) {
-                  return 0;
+                  return appInfo.getAppname().compareToIgnoreCase(t1.getAppname());
               }
           };
     public static final Comparator<AppInfo> NAME_COMPARATOR_DES = new Comparator<AppInfo>() {
               @Override
               public int compare(AppInfo appInfo, AppInfo t1) {
-                  return 0;
+                  return t1.getAppname().compareToIgnoreCase(appInfo.getAppname());
               }
           };
 
@@ -161,4 +149,24 @@ public class AppInfo {
 
 
 
+    @Override
+    public boolean equals(Object obj) {
+
+        boolean result = false;
+
+        if(obj != null){
+
+            if(obj instanceof AppInfo){
+
+                result = ((AppInfo)obj).getPackageName().equals(this.getPackageName());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public int compareTo(AppInfo o) {
+        return this.getAppname().compareToIgnoreCase(o.getAppname());
+    }
 }

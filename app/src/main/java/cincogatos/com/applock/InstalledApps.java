@@ -62,6 +62,7 @@ public class InstalledApps {
 
         //TODO Desencriptar fichero, recorrer y devolver
         blockedApps.add("yrj.ayudasordomudo");
+        blockedApps.add("com.android.camera");
 
     }
 

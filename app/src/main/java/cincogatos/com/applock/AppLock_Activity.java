@@ -15,7 +15,6 @@ public class AppLock_Activity extends AppLockActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(this, "Iniciando activity", Toast.LENGTH_SHORT).show();
         if (savedInstanceState != null)
             count = savedInstanceState.getInt(TRY_COUNT,0);
         else
@@ -57,7 +56,6 @@ public class AppLock_Activity extends AppLockActivity {
         intent.putExtra("appunlocked", app);
         startService(intent);
         finish();
-        //TODO se vuelve a ejecutar el bloqueo al cerrar esta
     }
 
     private void showHomeScreen(){

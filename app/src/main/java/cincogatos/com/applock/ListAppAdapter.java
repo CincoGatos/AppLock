@@ -2,8 +2,10 @@ package cincogatos.com.applock;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,32 +94,61 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
         holder.imvPadLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                final int pos = position;
-                final int POST_DELAYED = 1000;
-                Animation aninInvisible = AnimationUtils.loadAnimation(context, R.anim.invisible_image);
-                final Animation aninVisible = AnimationUtils.loadAnimation(context, R.anim.visible_image);
-                holder.imvPadLock.startAnimation(aninInvisible);
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
-                        AppInfo appInfo = getItem(pos);
-                        appInfo.setBlocked(!appInfo.isBlocked());
-                        holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
-                        holder.imvPadLock.startAnimation(aninVisible);
-
+                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    if (AppInfo.doIHavePermission(getContext())){
+                        clickEvent(position,holder);
+                    } else {
+                        showDialog();
                     }
-                }, POST_DELAYED);
+                } else {
+                    clickEvent(position,holder);
+                }
+
             }
         });
 
         return rootView;
     }
 
+    private void showDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle(R.string.non_permissions_dialog);
+        dialog.setMessage(R.string.non_permissions_dialog_message);
+        dialog.setPositiveButton(R.string.allow_permissions_dialog, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AppInfo.setPermission(getContext());
+            }
+        });
+        dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    private void clickEvent(int position, final AppInfoHolder holder){
+        final int pos = position;
+        final int POST_DELAYED = 1000;
+        Animation aninInvisible = AnimationUtils.loadAnimation(context, R.anim.invisible_image);
+        final Animation aninVisible = AnimationUtils.loadAnimation(context, R.anim.visible_image);
+        holder.imvPadLock.startAnimation(aninInvisible);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
+                AppInfo appInfo = getItem(pos);
+                appInfo.setBlocked(!appInfo.isBlocked());
+                holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
+                holder.imvPadLock.startAnimation(aninVisible);
+
+            }
+        }, POST_DELAYED);
+    }
 
 
     //Instance Methods

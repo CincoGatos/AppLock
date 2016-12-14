@@ -7,4 +7,7 @@
     <string name="action_menu_all_apps">All apps installed</string>
     <string name="search">Search</string>
     <string name="action_menu_order_des">Descending order</string>
+    <string name="non_permissions_dialog">No tienes permisos</string>
+    <string name="non_permissions_dialog_message">Para que la aplicación funcione hay que habilitar sus permisos.</string>
+    <string name="allow_permissions_dialog">Permitir</string>
 </resources>

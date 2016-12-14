@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 
 import java.util.Comparator;
@@ -128,10 +129,34 @@ public class AppInfo implements Comparable<AppInfo> {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static String getForegroundAppPostLollipop(Context context) {
         String currentApp = "NULL";
-        //ToDo CON USAGESTATEMANAGER NO FUNCIONA (??¿¿?¿?¿?¿)
+        UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        long time = System.currentTimeMillis();
+        List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*1000, time);
+        if (appList != null && appList.size() > 0) {
+            SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+            for (UsageStats usageStats : appList) {
+                mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+            }
+            if (mySortedMap != null && !mySortedMap.isEmpty()) {
+                currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+            }
+        }
         return currentApp;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static boolean doIHavePermission(Context context){
 
+
+        final UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        final List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, 0,  System.currentTimeMillis());
+
+        return !queryUsageStats.isEmpty();
+    }
+
+    public static void setPermission(Context context){
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        context.startActivity(intent);
+    }
     public static AppInfo getAppInfoByPackageName(Context context, String packageName){
         AppInfo appInfo = new AppInfo();
         try {

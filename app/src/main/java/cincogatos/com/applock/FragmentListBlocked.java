@@ -37,7 +37,7 @@ public class FragmentListBlocked extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_blocked_list, null);
 
-        listApps = (ListView)rootView.findViewById(R.id.listApp);
+        listApps = (ListView)rootView.findViewById(R.id.listBlocked);
         listApps.setAdapter(adapter);
 
         return rootView;

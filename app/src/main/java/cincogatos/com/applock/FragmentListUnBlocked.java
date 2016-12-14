@@ -37,7 +37,7 @@ public class FragmentListUnBlocked extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_unbloked_list, null);
 
-        listApp = (ListView)rootView.findViewById(R.id.listApp);
+        listApp = (ListView)rootView.findViewById(R.id.listUnBloked);
         listApp.setAdapter(adapter);
 
         return rootView;

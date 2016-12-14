@@ -57,9 +57,13 @@ public class Home_Activity extends AppCompatActivity {
         adapterFragmentPager = new AdapterFragmentPager(getSupportFragmentManager(), Home_Activity.this,
                 fragmentListBlocked, fragmentListUnBlocked);
 
+        tabLayout = (TabLayout)findViewById(R.id.tab);
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getStringArray(R.array.tab_titles)[0]));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getStringArray(R.array.tab_titles)[1]));
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(adapterFragmentPager);
-        
+        tabLayout.setupWithViewPager(viewPager, true);
+
 
 
     }

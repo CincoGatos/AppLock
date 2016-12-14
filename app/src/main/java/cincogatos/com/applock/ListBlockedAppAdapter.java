@@ -66,6 +66,7 @@ public class ListBlockedAppAdapter extends ArrayAdapter<AppInfo> {
 
         holder.imvAppIcon.setImageDrawable(getItem(position).getIcon());
         holder.imvPadLock.setImageResource(R.drawable.padlock_close);
+        holder.txvAppName.setText(getItem(position).getAppname());
 
         if(getItem(position).isSystemApp()){
 
@@ -81,12 +82,12 @@ public class ListBlockedAppAdapter extends ArrayAdapter<AppInfo> {
             public void onClick(View v) {
                 if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     if (AppInfo.doIHavePermission(getContext())){
-                        clickEvent(position,holder);
+                        clickEvent(position);
                     } else {
                         showDialog();
                     }
                 } else {
-                    clickEvent(position,holder);
+                    clickEvent(position);
                 }
 
             }
@@ -117,9 +118,9 @@ public class ListBlockedAppAdapter extends ArrayAdapter<AppInfo> {
         dialog.show();
     }
 
-    private void clickEvent(int position, final ListBlockedAppAdapter.AppInfoHolder holder){
-        final int pos = position;
+    private void clickEvent(int position){
 
+        getItem(position).setBlocked(false);
         if(callBack != null){
 
             callBack.onUnBlockedApp(getItem(position).getPackageName());

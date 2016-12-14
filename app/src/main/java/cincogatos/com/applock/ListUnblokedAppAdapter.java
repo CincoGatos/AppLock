@@ -127,8 +127,8 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
     }
 
     private void clickEvent(int position, final AppInfoHolder holder){
-        final int pos = position;
-        
+
+        getItem(position).setBlocked(true);
         if(callBack != null){
 
             callBack.onBlockedApp(getItem(position).getPackageName());

@@ -19,6 +19,6 @@ public class SettingsLock_Activity extends AppLockActivity {
 
     @Override
     public void onPinSuccess(int attempts) {
-
+        finish();
     }
 }

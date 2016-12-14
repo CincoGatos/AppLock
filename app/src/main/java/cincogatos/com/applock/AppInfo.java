@@ -92,7 +92,7 @@ public class AppInfo implements Comparable<AppInfo> {
         this.blocked = blocked;
     }
 
-    //Construct
+    //Constructor
     public AppInfo(String appname, String packageName, Drawable icon,boolean systemApp, Intent intent, boolean blocked) {
         this.appname = appname;
         this.packageName = packageName;
@@ -141,6 +141,7 @@ public class AppInfo implements Comparable<AppInfo> {
         }
         return currentApp;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static boolean doIHavePermission(Context context){
 
@@ -155,6 +156,7 @@ public class AppInfo implements Comparable<AppInfo> {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
         context.startActivity(intent);
     }
+
     public static AppInfo getAppInfoByPackageName(Context context, String packageName){
         AppInfo appInfo = new AppInfo();
         try {
@@ -166,7 +168,7 @@ public class AppInfo implements Comparable<AppInfo> {
             appInfo.setPackageName(packageName);
             appInfo.setIntent(pm.getLaunchIntentForPackage(packageName));
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            appInfo = null;
         }
 
         return appInfo;

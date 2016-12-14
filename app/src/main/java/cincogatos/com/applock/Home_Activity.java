@@ -70,7 +70,7 @@ public class Home_Activity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.pager);
         installedApps = InstalledApps.getInstance(Home_Activity.this);
 
-        listUnBlockedAdapter = new ListAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList(), callBack);
+        listUnBlockedAdapter = new ListAppAdapter(Home_Activity.this, installedApps.getNonBlockedAppsList(), callBack);
         fragmentListUnBlocked = FragmentListUnBlocked.newInstance(listUnBlockedAdapter);
 
         listBlockedAppAdapter = new ListAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList(), callBack);

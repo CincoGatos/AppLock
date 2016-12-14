@@ -145,7 +145,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
            }else {
 
-               callBack.onBlockedApp(appInfo.getPackageName());
+               callBack.onUnBlockedApp(appInfo.getPackageName());
            }
         }
     }

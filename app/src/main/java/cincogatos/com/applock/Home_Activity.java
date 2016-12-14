@@ -39,7 +39,8 @@ public class Home_Activity extends AppCompatActivity {
             AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
             listBlockedAppAdapter.remove(appInfo);
             listUnBlockedAdapter.add(appInfo);
-            FileUtils.save(getFilesDir().getAbsolutePath(), appInfo.getPackageName(), File );
+            installedApps.unblockApp(appInfo);
+
         }
 
         @Override
@@ -48,6 +49,8 @@ public class Home_Activity extends AppCompatActivity {
             AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
             listBlockedAppAdapter.add(appInfo);
             listUnBlockedAdapter.remove(appInfo);
+            installedApps.blockApp(appInfo);
+
         }
     };
 

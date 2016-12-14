@@ -25,9 +25,10 @@
 
         <service
             android:name=".ListeningService"
-            android:exported="false"></service>
+            android:exported="false" />
 
-        <activity android:name=".ProvisionalListActivity"></activity>
+        <activity android:name=".ProvisionalListActivity" />
+        <activity android:name=".Test"></activity>
     </application>
 
 </manifest>

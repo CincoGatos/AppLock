@@ -30,4 +30,18 @@
         android:layout_weight="1"
         android:onClick="testFileUtils"
         android:text="Probar lista" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="savePin"
+        android:text="Guardar pin" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="changePin"
+        android:text="Cambiar pin" />
 </LinearLayout>

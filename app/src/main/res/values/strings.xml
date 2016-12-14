@@ -3,7 +3,7 @@
     <string name="system_app">Aplicación del sistema</string>
     <string name="non_system_app">Aplicación de terceros</string>
     <string name="action_menu_unbloked">Only unbloked</string>
-    <string name="action_menu_bloked" >Only bloked</string>
+    <string name="action_menu_bloked">Only bloked</string>
     <string name="action_menu_all_apps">All apps installed</string>
     <string name="search">Search</string>
     <string name="action_menu_order_des">Descending order</string>

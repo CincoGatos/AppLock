@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.github.orangegangsters.lollipin.lib.managers.AppLock;
+
 public class Home_Activity extends AppCompatActivity {
     InstalledApps apps;
     static final String TAG = "TAG";
@@ -31,4 +33,14 @@ public class Home_Activity extends AppCompatActivity {
         startActivity(new Intent(Home_Activity.this, ProvisionalListActivity.class));
     }
 
+    public void savePin(View view) {
+        Intent intent = new Intent(Home_Activity.this, Lock_Activity.class);
+        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
+        startActivity(intent);
+    }
+    public void changePin(View view) {
+        Intent intent = new Intent(Home_Activity.this, Lock_Activity.class);
+        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.CHANGE_PIN);
+        startActivity(intent);
+    }
 }

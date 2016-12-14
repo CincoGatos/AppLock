@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.orangegangsters.lollipin.lib.managers.AppLock;
+
 
 public class ListeningService extends Service {
 
@@ -35,6 +37,7 @@ public class ListeningService extends Service {
         Intent intent = new Intent (ListeningService.this, Lock_Activity.class);
         intent.putExtra("app",packageName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
         startActivity(intent);
     }
 

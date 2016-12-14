@@ -14,23 +14,65 @@ public class InstalledApps {
 
 
     private ArrayList<AppInfo> installedApps;
+    private ArrayList<AppInfo> blockedAppsList;
+    private ArrayList<AppInfo> unBlockedAppsList;
     private static ArrayList<String> blockedApps = new ArrayList<>();
     private static ArrayList<String> unlockedApps = new ArrayList<>();
     private Context context;
+    private static InstalledApps instance;
 
 
-    public InstalledApps(Context context){
+    public static InstalledApps getInstance(Context context){
+
+        if(instance == null){
+
+            instance = new InstalledApps(context);
+        }
+
+        return instance;
+    }
+
+
+    private InstalledApps(Context context){
 
         this.context = context;
         getBlockedApps();
         installedApps = getInstalledApps();
+        separeApps();
     }
 
-    
+
+    public ArrayList<AppInfo> getBlockedAppsList(){
+
+        return blockedAppsList;
+    }
+
+    public ArrayList<AppInfo> getUnBlockedAppsList(){
+
+        return unBlockedAppsList;
+    }
 
     public ArrayList<AppInfo> getInstalledApplications(){
 
         return installedApps;
+    }
+
+    private void separeApps(){
+
+        blockedAppsList = new ArrayList<AppInfo>();
+        unBlockedAppsList = new ArrayList<AppInfo>();
+
+        for (AppInfo tmp: installedApps){
+
+            if(tmp.isBlocked()){
+
+                blockedAppsList.add(tmp);
+
+            }else {
+
+                unBlockedAppsList.add(tmp);
+            }
+        }
     }
 
     private ArrayList<AppInfo> getInstalledApps(){

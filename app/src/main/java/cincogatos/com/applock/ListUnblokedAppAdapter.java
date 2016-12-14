@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListAppAdapter extends ArrayAdapter<AppInfo> {
+public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
 
     //Camps
     private Context context;
@@ -30,18 +30,8 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     public static final int ALL_APP = 2;
 
 
-    /*
-    * IMPORTANTE: hay que plantearse el usar un Sigleton para la lista de aplicaciones, ya que se va a cambiar
-    * el estado de bloqueado cada vez que se pulsa el icono del candado. Además hay que tener cuidado cuando
-    * permitamos el filtrado de datos ya que las posiciones de la lista local puede que no se correspondan
-    * con las de la lista completa de las app. Una posible solucion es utilizar el packageName de cada objeto
-    * de la clase AppInfo (si es que es unico que no lo se) y hacer un metodo a la lista que permita localizar
-    * un objeto por su packageName. De este modo buscamos el objeto antes de cambiar el estado de bloqueado
-    * y así nos aseguramos de estar cambiando el estado del objeto correcto.
-    *
-    * */
     //Construct
-    public ListAppAdapter(Context context, ArrayList<AppInfo> appInfoList) {
+    public ListUnblokedAppAdapter(Context context, ArrayList<AppInfo> appInfoList) {
         super(context, R.layout.item_list_app);
         this.context = context;
         this.localList = appInfoList;

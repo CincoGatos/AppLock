@@ -1,26 +1,36 @@
 package cincogatos.com.applock;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.orangegangsters.lollipin.lib.managers.AppLock;
 
 public class Home_Activity extends AppCompatActivity {
+
     InstalledApps apps;
     static final String TAG = "TAG";
     private ListView appList;
-    private ListAppAdapter adapter;
     private InstalledApps installedApps;
+    private FragmentListBlocked fragmentListBlocked;
+    private FragmentListUnBlocked fragmentListUnBlocked;
+    private ViewPager viewPager;
+    private AdapterFragmentPager adapterFragmentPager;
+    private ListBlockedAppAdapter listBlockedAppAdapter;
+    private ListUnblokedAppAdapter listUnblokedAppAdapter;
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +42,24 @@ public class Home_Activity extends AppCompatActivity {
         }
         startService();
         setContentView(R.layout.activity_home);
-        installedApps = new InstalledApps(Home_Activity.this);
-        adapter = new ListAppAdapter(Home_Activity.this, installedApps.getInstalledApplications());
-        appList = (ListView)findViewById(R.id.listApp);
-        appList.setAdapter(adapter);
 
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        viewPager = (ViewPager)findViewById(R.id.pager);
+        installedApps = InstalledApps.getInstance(Home_Activity.this);
+
+        listUnblokedAppAdapter = new ListUnblokedAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList());
+        fragmentListUnBlocked = FragmentListUnBlocked.newInstance(listUnblokedAppAdapter);
+
+        listBlockedAppAdapter = new ListBlockedAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList());
+        fragmentListBlocked = FragmentListBlocked.newInstance(listBlockedAppAdapter);
+
+        adapterFragmentPager = new AdapterFragmentPager(getSupportFragmentManager(), Home_Activity.this,
+                fragmentListBlocked, fragmentListUnBlocked);
+
+        viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager.setAdapter(adapterFragmentPager);
+        
 
 
     }
@@ -44,24 +67,6 @@ public class Home_Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-
-            case R.id.action_filter_by_bloked:
-                adapter.filterBy(ListAppAdapter.ONLY_BLOKED);
-                break;
-            case R.id.action_filter_by_unbloked:
-                adapter.filterBy(ListAppAdapter.ONLY_UNBLOKED);
-                break;
-            case R.id.action_all_apps:
-                adapter.filterBy(ListAppAdapter.ALL_APP);
-                break;
-            case R.id.action_menu_sort:
-                adapter.orderBy(ListAppAdapter.ORDERBY_NAME_ASC);
-                break;
-            case R.id.action_order_by_des:
-                adapter.orderBy(ListAppAdapter.ORDERBY_NAME_DES);
-                break;
-        }
 
 
         return super.onOptionsItemSelected(item);
@@ -88,7 +93,7 @@ public class Home_Activity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.filerBy(newText);
+
                 return true;
             }
         });

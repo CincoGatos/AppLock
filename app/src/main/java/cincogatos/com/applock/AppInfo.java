@@ -25,8 +25,6 @@ public class AppInfo implements Comparable<AppInfo> {
     private String appname;
     private String packageName;
     private Drawable icon;
-
-
     private boolean systemApp;
     private Intent intent;
     private boolean blocked;

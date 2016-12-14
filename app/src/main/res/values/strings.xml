@@ -10,4 +10,13 @@
     <string name="non_permissions_dialog">No tienes permisos</string>
     <string name="non_permissions_dialog_message">Para que la aplicación funcione hay que habilitar sus permisos.</string>
     <string name="allow_permissions_dialog">Permitir</string>
+
+
+    <string-array name="tab_titles">
+
+        <item>Desbloqueadas</item>
+        <item>Bloqueadas</item>
+
+    </string-array>
+
 </resources>

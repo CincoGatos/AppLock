@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.github.orangegangsters.lollipin.lib.managers.AppLockActivity;
-import com.github.orangegangsters.lollipin.lib.managers.LockManager;
 
 public class AppLock_Activity extends AppLockActivity {
     final static int LIMIT = 3;

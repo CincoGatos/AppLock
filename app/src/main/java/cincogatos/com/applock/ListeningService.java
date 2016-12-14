@@ -1,7 +1,9 @@
 package cincogatos.com.applock;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -14,13 +16,14 @@ public class ListeningService extends Service {
 
     private final static int INTERVAL_TIME = 100;
     private boolean active;
+    private final BroadcastReceiver myReceiver = new MyReceiver();
 
     private void checkApplication(){
         String app = "";
         while (active) {
             try {
                 app = AppInfo.getForegroundApp(ListeningService.this);
-                if (InstalledApps.isBlocked(app)) {
+                if (InstalledApps.getInstance().isBlocked(app)) {
                     openLocker(app);
                 }
                 Thread.sleep(INTERVAL_TIME);
@@ -56,6 +59,7 @@ public class ListeningService extends Service {
     public void onDestroy() {
         active = false;
         thread.interrupt();
+        unregisterReceiver(myReceiver);
         Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show();
     }
 
@@ -65,7 +69,7 @@ public class ListeningService extends Service {
         if (args != null) {
             String app = args.getString("appunlocked", "");
             if (app != "") {
-                InstalledApps.unlockApp(app);
+                InstalledApps.getInstance().unlockApp(app);
             }
         }
         active = true;
@@ -74,5 +78,13 @@ public class ListeningService extends Service {
         Toast.makeText(this, "Service started...", Toast.LENGTH_SHORT).show();
 
         return START_REDELIVER_INTENT;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(myReceiver, filter);
     }
 }

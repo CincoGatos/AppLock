@@ -31,14 +31,21 @@ public class InstalledApps {
 
         return instance;
     }
+    public static InstalledApps getInstance(){
+        return instance;
+    }
 
 
     private InstalledApps(Context context){
 
         this.context = context;
+
+        blockedAppsList = new ArrayList<AppInfo>();
+        unBlockedAppsList = new ArrayList<AppInfo>();
+
         getBlockedApps();
         installedApps = getInstalledApps();
-        separeApps();
+        separetApps();
     }
 
 
@@ -52,16 +59,16 @@ public class InstalledApps {
         return unBlockedAppsList;
     }
 
+    public void cleanUnBlockedAppsList(){
+        unlockedApps.clear();
+    }
+
     public ArrayList<AppInfo> getInstalledApplications(){
 
         return installedApps;
     }
 
-    private void separeApps(){
-
-        blockedAppsList = new ArrayList<AppInfo>();
-        unBlockedAppsList = new ArrayList<AppInfo>();
-
+    private void separetApps(){
         for (AppInfo tmp: installedApps){
 
             if(tmp.isBlocked()){
@@ -108,8 +115,15 @@ public class InstalledApps {
 
     }
 
-    public static boolean isBlocked(String packageName){
-        boolean result = blockedApps.contains(packageName);
+    public boolean isBlocked(String packageName){
+        //boolean result = blockedApps.contains(packageName);
+        boolean result = false;
+        for (AppInfo aux: blockedAppsList){
+            if (aux.getPackageName().equalsIgnoreCase(packageName)){
+                result = true;
+                break;
+            }
+        }
 
         if (result) {
             result = !unlockedApps.contains(packageName);
@@ -117,7 +131,7 @@ public class InstalledApps {
         return result;
     }
 
-    public static void unlockApp(String packageName) {
+    public void unlockApp(String packageName) {
         if (!unlockedApps.contains(packageName))
             unlockedApps.add(packageName);
     }

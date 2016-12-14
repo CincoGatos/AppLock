@@ -24,12 +24,18 @@ public class ListBlockedAppAdapter extends ArrayAdapter<AppInfo> {
 
     private Context context;
     private ArrayList<AppInfo> localList;
+    public AdapterCallBack callBack;
+    public interface AdapterCallBack{
 
-    public ListBlockedAppAdapter(Context context, ArrayList<AppInfo> dataList) {
+        void onUnBlockedApp(String packageName);
+    }
+
+    public ListBlockedAppAdapter(Context context, ArrayList<AppInfo> dataList, AdapterCallBack callBack) {
         super(context, R.layout.item_list_app, new ArrayList<AppInfo>(dataList));
 
         this.context = context;
         this.localList = dataList;
+        this.callBack = callBack;
 
     }
 
@@ -113,23 +119,11 @@ public class ListBlockedAppAdapter extends ArrayAdapter<AppInfo> {
 
     private void clickEvent(int position, final ListBlockedAppAdapter.AppInfoHolder holder){
         final int pos = position;
-        final int POST_DELAYED = 1000;
-        Animation aninInvisible = AnimationUtils.loadAnimation(context, R.anim.invisible_image);
-        final Animation aninVisible = AnimationUtils.loadAnimation(context, R.anim.visible_image);
-        holder.imvPadLock.startAnimation(aninInvisible);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
-                AppInfo appInfo = getItem(pos);
-                appInfo.setBlocked(!appInfo.isBlocked());
-                holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
-                holder.imvPadLock.startAnimation(aninVisible);
+        if(callBack != null){
 
-            }
-        }, POST_DELAYED);
+            callBack.onUnBlockedApp(getItem(position).getPackageName());
+        }
     }
 
     class AppInfoHolder{

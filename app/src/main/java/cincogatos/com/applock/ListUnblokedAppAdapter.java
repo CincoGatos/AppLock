@@ -28,14 +28,21 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
     public static final int ONLY_BLOKED = 0;
     public static final int ONLY_UNBLOKED = 1;
     public static final int ALL_APP = 2;
+    public AdapterCallBack callBack;
+    public interface AdapterCallBack{
+
+        void onBlockedApp(String packageName);
+    }
 
 
     //Construct
-    public ListUnblokedAppAdapter(Context context, ArrayList<AppInfo> appInfoList) {
+    public ListUnblokedAppAdapter(Context context, ArrayList<AppInfo> appInfoList, AdapterCallBack callBack) {
         super(context, R.layout.item_list_app);
         this.context = context;
         this.localList = appInfoList;
+        this.callBack = callBack;
         addAll(new ArrayList<AppInfo>(appInfoList));
+
     }
 
     //Overray Methods
@@ -121,23 +128,11 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
 
     private void clickEvent(int position, final AppInfoHolder holder){
         final int pos = position;
-        final int POST_DELAYED = 1000;
-        Animation aninInvisible = AnimationUtils.loadAnimation(context, R.anim.invisible_image);
-        final Animation aninVisible = AnimationUtils.loadAnimation(context, R.anim.visible_image);
-        holder.imvPadLock.startAnimation(aninInvisible);
+        
+        if(callBack != null){
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //TODO añadir una linea en la que se busque el objeto al que se la va ha cambiar el estado y el metodo correspondiente
-                AppInfo appInfo = getItem(pos);
-                appInfo.setBlocked(!appInfo.isBlocked());
-                holder.imvPadLock.setImageResource(appInfo.isBlocked() ? R.drawable.padlock_close:R.drawable.padlock_open);
-                holder.imvPadLock.startAnimation(aninVisible);
-
-            }
-        }, POST_DELAYED);
+            callBack.onBlockedApp(getItem(position).getPackageName());
+        }
     }
 
 

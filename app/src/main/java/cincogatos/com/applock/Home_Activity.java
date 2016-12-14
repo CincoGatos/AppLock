@@ -30,6 +30,22 @@ public class Home_Activity extends AppCompatActivity {
     private ListUnblokedAppAdapter listUnblokedAppAdapter;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+    private ListUnblokedAppAdapter.AdapterCallBack callBackUnBloked = new ListUnblokedAppAdapter.AdapterCallBack() {
+        @Override
+        public void onBlockedApp(String packageName) {
+
+            listUnblokedAppAdapter.remove(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
+            listBlockedAppAdapter.add(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
+        }
+    };
+    private ListBlockedAppAdapter.AdapterCallBack callBackBloked = new ListBlockedAppAdapter.AdapterCallBack() {
+        @Override
+        public void onUnBlockedApp(String packageName) {
+
+            listBlockedAppAdapter.remove(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
+            listUnblokedAppAdapter.add(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +64,10 @@ public class Home_Activity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.pager);
         installedApps = InstalledApps.getInstance(Home_Activity.this);
 
-        listUnblokedAppAdapter = new ListUnblokedAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList());
+        listUnblokedAppAdapter = new ListUnblokedAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList(), callBackUnBloked);
         fragmentListUnBlocked = FragmentListUnBlocked.newInstance(listUnblokedAppAdapter);
 
-        listBlockedAppAdapter = new ListBlockedAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList());
+        listBlockedAppAdapter = new ListBlockedAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList(), callBackBloked);
         fragmentListBlocked = FragmentListBlocked.newInstance(listBlockedAppAdapter);
 
         adapterFragmentPager = new AdapterFragmentPager(getSupportFragmentManager(), Home_Activity.this,

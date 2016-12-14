@@ -15,7 +15,7 @@ public class InstalledApps {
 
     private ArrayList<AppInfo> installedApps;
     private ArrayList<AppInfo> blockedAppsList;
-    private ArrayList<AppInfo> unBlockedAppsList;
+    private ArrayList<AppInfo> nonBlockedAppsList;
     private static ArrayList<String> blockedApps = new ArrayList<>();
     private static ArrayList<String> unlockedApps = new ArrayList<>();
     private Context context;
@@ -41,7 +41,7 @@ public class InstalledApps {
         this.context = context;
 
         blockedAppsList = new ArrayList<AppInfo>();
-        unBlockedAppsList = new ArrayList<AppInfo>();
+        nonBlockedAppsList = new ArrayList<AppInfo>();
 
         getBlockedApps();
         installedApps = getInstalledApps();
@@ -54,13 +54,25 @@ public class InstalledApps {
         return blockedAppsList;
     }
 
-    public ArrayList<AppInfo> getUnBlockedAppsList(){
+    public ArrayList<AppInfo> getNonBlockedAppsList(){
 
-        return unBlockedAppsList;
+        return nonBlockedAppsList;
     }
 
     public void cleanUnBlockedAppsList(){
         unlockedApps.clear();
+    }
+
+    public void blockApp(AppInfo app){
+        blockedApps.add(app.getPackageName());
+        blockedAppsList.add(app);
+        nonBlockedAppsList.remove(app);
+    }
+
+    public void unblockApp(AppInfo app){
+        blockedApps.remove(app.getPackageName());
+        blockedAppsList.remove(app);
+        nonBlockedAppsList.add(app);
     }
 
     public ArrayList<AppInfo> getInstalledApplications(){
@@ -77,7 +89,7 @@ public class InstalledApps {
 
             }else {
 
-                unBlockedAppsList.add(tmp);
+                nonBlockedAppsList.add(tmp);
             }
         }
     }

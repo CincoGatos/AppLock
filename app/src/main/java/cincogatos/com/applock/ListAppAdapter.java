@@ -90,7 +90,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
         }else {
 
-            holder.imvPadLock.setImageResource(R.drawable.padlock_close);
+            holder.imvPadLock.setImageResource(R.drawable.padlock_open);
         }
 
         holder.imvPadLock.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +128,7 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                dialog.cancel();
             }
         });
         dialog.show();

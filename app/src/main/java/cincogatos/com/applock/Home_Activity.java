@@ -142,15 +142,8 @@ public class Home_Activity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if(fragmentListBlocked.isVisible()){
-
-                    listBlockedAppAdapter.filerBy(newText);
-
-                }else {
-
-                    listUnBlockedAdapter.filerBy(newText);
-                }
-
+                listBlockedAppAdapter.filerBy(newText);
+                listUnBlockedAdapter.filerBy(newText);
                 return true;
             }
         });

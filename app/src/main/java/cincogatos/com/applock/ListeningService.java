@@ -1,13 +1,10 @@
 package cincogatos.com.applock;
 
-import android.app.Activity;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.github.orangegangsters.lollipin.lib.managers.AppLock;
@@ -34,7 +31,7 @@ public class ListeningService extends Service {
     }
 
     private void openLocker(String packageName){
-        Intent intent = new Intent (ListeningService.this, Lock_Activity.class);
+        Intent intent = new Intent (ListeningService.this, AppLock_Activity.class);
         intent.putExtra("app",packageName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);

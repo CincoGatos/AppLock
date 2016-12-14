@@ -13,7 +13,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".AppLock_Application">
         <activity android:name=".Home_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Lock_Activity" />
+        <activity android:name=".AppLock_Activity" />
 
         <service
             android:name=".ListeningService"
             android:exported="false" />
 
         <activity android:name=".ProvisionalListActivity" />
-        <activity android:name=".Test"></activity>
+        <activity android:name=".SettingsLock_Activity"></activity>
     </application>
 
 </manifest>

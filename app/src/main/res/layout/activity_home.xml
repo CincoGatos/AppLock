@@ -9,39 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="3"
     tools:context="cincogatos.com.applock.Home_Activity">
+    <ListView
+        android:id="@+id/listApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="startService"
-        android:text="Iniciar servicio" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="stopService"
-        android:text="Parar servicio" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="testFileUtils"
-        android:text="Probar lista" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="savePin"
-        android:text="Guardar pin" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="changePin"
-        android:text="Cambiar pin" />
 </LinearLayout>

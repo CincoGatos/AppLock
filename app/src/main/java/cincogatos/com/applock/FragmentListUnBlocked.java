@@ -15,17 +15,17 @@ import android.widget.ListView;
 public class FragmentListUnBlocked extends Fragment {
 
 
-    private ListUnblokedAppAdapter adapter;
+    private ListAppAdapter adapter;
     private ListView listApp;
 
-    public static FragmentListUnBlocked newInstance(ListUnblokedAppAdapter adapter) {
+    public static FragmentListUnBlocked newInstance(ListAppAdapter adapter) {
 
         FragmentListUnBlocked fragment = new FragmentListUnBlocked();
         fragment.setAdapter(adapter);
         return fragment;
     }
 
-    public void setAdapter(ListUnblokedAppAdapter adapter){
+    public void setAdapter(ListAppAdapter adapter){
 
         this.adapter = adapter;
 

@@ -14,19 +14,19 @@ import android.widget.ListView;
 
 public class FragmentListBlocked extends Fragment {
 
-    private ListBlockedAppAdapter adapter;
+    private ListAppAdapter adapter;
     private ListView listApps;
 
 
 
-    public static FragmentListBlocked newInstance(ListBlockedAppAdapter adapter) {
+    public static FragmentListBlocked newInstance(ListAppAdapter adapter) {
 
         FragmentListBlocked fragment = new FragmentListBlocked();
         fragment.setAdapter(adapter);
         return fragment;
     }
 
-    private void setAdapter(ListBlockedAppAdapter adapter){
+    private void setAdapter(ListAppAdapter adapter){
 
         this.adapter = adapter;
     }

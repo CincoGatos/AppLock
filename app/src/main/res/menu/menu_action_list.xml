@@ -18,18 +18,4 @@
         android:title="@string/action_menu_order_des"
         app:showAsAction="never"/>
 
-    <item android:icon="@android:drawable/ic_menu_sort_alphabetically"
-        android:id="@+id/action_filter_by_unbloked"
-        android:title="@string/action_menu_unbloked"
-        app:showAsAction="never"/>
-
-    <item android:icon="@android:drawable/ic_menu_sort_alphabetically"
-        android:id="@+id/action_filter_by_bloked"
-        android:title="@string/action_menu_bloked"
-        app:showAsAction="never"/>
-
-    <item android:icon="@android:drawable/ic_menu_sort_alphabetically"
-        android:id="@+id/action_all_apps"
-        android:title="@string/action_menu_all_apps"
-        app:showAsAction="never"/>
 </menu>

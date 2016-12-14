@@ -26,26 +26,29 @@ public class Home_Activity extends AppCompatActivity {
     private FragmentListUnBlocked fragmentListUnBlocked;
     private ViewPager viewPager;
     private AdapterFragmentPager adapterFragmentPager;
-    private ListBlockedAppAdapter listBlockedAppAdapter;
-    private ListUnblokedAppAdapter listUnblokedAppAdapter;
+    private ListAppAdapter listBlockedAppAdapter;
+    private ListAppAdapter listUnBlockedAdapter;
     private TabLayout tabLayout;
     private Toolbar toolbar;
-    private ListUnblokedAppAdapter.AdapterCallBack callBackUnBloked = new ListUnblokedAppAdapter.AdapterCallBack() {
-        @Override
-        public void onBlockedApp(String packageName) {
-
-            listUnblokedAppAdapter.remove(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
-            listBlockedAppAdapter.add(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
-        }
-    };
-    private ListBlockedAppAdapter.AdapterCallBack callBackBloked = new ListBlockedAppAdapter.AdapterCallBack() {
+    private ListAppAdapter.AdapterCallBack callBack = new ListAppAdapter.AdapterCallBack() {
         @Override
         public void onUnBlockedApp(String packageName) {
 
-            listBlockedAppAdapter.remove(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
-            listUnblokedAppAdapter.add(AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName));
+            AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
+            listBlockedAppAdapter.remove(appInfo);
+            listUnBlockedAdapter.add(appInfo);
+        }
+
+        @Override
+        public void onBlockedApp(String packageName) {
+
+            AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
+            listBlockedAppAdapter.add(appInfo);
+            listUnBlockedAdapter.remove(appInfo);
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,10 @@ public class Home_Activity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.pager);
         installedApps = InstalledApps.getInstance(Home_Activity.this);
 
-        listUnblokedAppAdapter = new ListUnblokedAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList(), callBackUnBloked);
-        fragmentListUnBlocked = FragmentListUnBlocked.newInstance(listUnblokedAppAdapter);
+        listUnBlockedAdapter = new ListAppAdapter(Home_Activity.this, installedApps.getUnBlockedAppsList(), callBack);
+        fragmentListUnBlocked = FragmentListUnBlocked.newInstance(listUnBlockedAdapter);
 
-        listBlockedAppAdapter = new ListBlockedAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList(), callBackBloked);
+        listBlockedAppAdapter = new ListAppAdapter(Home_Activity.this, installedApps.getBlockedAppsList(), callBack);
         fragmentListBlocked = FragmentListBlocked.newInstance(listBlockedAppAdapter);
 
         adapterFragmentPager = new AdapterFragmentPager(getSupportFragmentManager(), Home_Activity.this,
@@ -87,9 +90,28 @@ public class Home_Activity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        int typeOrder = ListAppAdapter.ORDERBY_NAME_ASC;
 
+        if(item.getItemId() == R.id.action_order_by_des){
+
+            typeOrder = ListAppAdapter.ORDERBY_NAME_DES;
+        }
+
+        sort(typeOrder);
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sort(int typeOrder) {
+
+        if(fragmentListUnBlocked.isVisible()){
+
+            listUnBlockedAdapter.orderBy(typeOrder);
+
+        }else {
+
+            listBlockedAppAdapter.orderBy(typeOrder);
+        }
     }
 
     @Override
@@ -113,6 +135,15 @@ public class Home_Activity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                if(fragmentListBlocked.isVisible()){
+
+                    listBlockedAppAdapter.filerBy(newText);
+
+                }else {
+
+                    listUnBlockedAdapter.filerBy(newText);
+                }
 
                 return true;
             }

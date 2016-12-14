@@ -1,10 +1,9 @@
 package cincogatos.com.applock;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
-import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
+/**
+ * Created by amador on 14/12/16.
+ */
 
-    //Camps
+public class ListAppAdapter extends ArrayAdapter<AppInfo> {
+
     private Context context;
     private ArrayList<AppInfo> localList;
     public static final int ORDERBY_NAME_ASC = 0;
@@ -31,53 +32,48 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
     public AdapterCallBack callBack;
     public interface AdapterCallBack{
 
+        void onUnBlockedApp(String packageName);
+
         void onBlockedApp(String packageName);
     }
 
+    public ListAppAdapter(Context context, ArrayList<AppInfo> dataList, AdapterCallBack callBack) {
+        super(context, R.layout.item_list_app, new ArrayList<AppInfo>(dataList));
 
-    //Construct
-    public ListUnblokedAppAdapter(Context context, ArrayList<AppInfo> appInfoList, AdapterCallBack callBack) {
-        super(context, R.layout.item_list_app);
         this.context = context;
-        this.localList = appInfoList;
+        this.localList = dataList;
         this.callBack = callBack;
-        addAll(new ArrayList<AppInfo>(appInfoList));
 
     }
 
-    //Overray Methods
+
+    @NonNull
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View rootView = convertView;
         final AppInfoHolder holder;
 
-        if(convertView == null){
+        if(rootView == null){
 
-            holder = new AppInfoHolder();
             rootView = LayoutInflater.from(this.context).inflate(R.layout.item_list_app, null);
+            holder = new AppInfoHolder();
+
             holder.imvAppIcon = (ImageView)rootView.findViewById(R.id.imvAppIcon);
-            holder.imvPadLock = (ImageView)rootView.findViewById(R.id.imvPadlock);
             holder.txvAppName = (TextView)rootView.findViewById(R.id.txvAppName);
+            holder.imvPadLock = (ImageView)rootView.findViewById(R.id.imvPadlock);
             holder.txvAppSystem = (TextView)rootView.findViewById(R.id.txvAppSystem);
+
             rootView.setTag(holder);
 
-        }else{
+        }else {
 
             holder = (AppInfoHolder)rootView.getTag();
         }
 
         holder.imvAppIcon.setImageDrawable(getItem(position).getIcon());
+        holder.imvPadLock.setImageResource(R.drawable.padlock_close);
         holder.txvAppName.setText(getItem(position).getAppname());
-
-        if(getItem(position).isBlocked()){
-
-            holder.imvPadLock.setImageResource(R.drawable.padlock_close);
-
-        }else{
-
-            holder.imvPadLock.setImageResource(R.drawable.padlock_open);
-        }
 
         if(getItem(position).isSystemApp()){
 
@@ -88,23 +84,34 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
             holder.txvAppSystem.setText(R.string.non_system_app);
         }
 
+        if(getItem(position).isBlocked()){
+
+            holder.imvPadLock.setImageResource(R.drawable.padlock_close);
+
+        }else {
+
+            holder.imvPadLock.setImageResource(R.drawable.padlock_close);
+        }
+
         holder.imvPadLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     if (AppInfo.doIHavePermission(getContext())){
-                        clickEvent(position,holder);
+                        clickEvent(position);
                     } else {
                         showDialog();
                     }
                 } else {
-                    clickEvent(position,holder);
+                    clickEvent(position);
                 }
 
             }
         });
 
+
         return rootView;
+
     }
 
     private void showDialog() {
@@ -126,19 +133,25 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
         dialog.show();
     }
 
-    private void clickEvent(int position, final AppInfoHolder holder){
+    private void clickEvent(int position){
 
-        getItem(position).setBlocked(true);
+        AppInfo appInfo = getItem(position);
+        appInfo.setBlocked(!appInfo.isBlocked());
         if(callBack != null){
 
-            callBack.onBlockedApp(getItem(position).getPackageName());
+           if(appInfo.isBlocked()){
+
+               callBack.onBlockedApp(appInfo.getPackageName());
+
+           }else {
+
+               callBack.onBlockedApp(appInfo.getPackageName());
+           }
         }
     }
 
-
     //Instance Methods
     public void orderBy(int typeOrder){
-
 
         switch (typeOrder){
 
@@ -167,22 +180,19 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
 
         }
 
-
     }
 
     public void filerBy(String filterText){
 
+        clear();
 
-            clear();
+        for (AppInfo tmp : this.localList) {
 
-            for (AppInfo tmp : this.localList) {
+            if (tmp.getAppname().toUpperCase().startsWith(filterText.toUpperCase())) {
 
-                if (tmp.getAppname().toUpperCase().startsWith(filterText.toUpperCase())) {
-
-                    add(tmp);
-                }
+                add(tmp);
             }
-
+        }
     }
 
     private void loadApps() {
@@ -217,7 +227,6 @@ public class ListUnblokedAppAdapter extends ArrayAdapter<AppInfo> {
             }
         }
     }
-
 
     class AppInfoHolder{
 

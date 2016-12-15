@@ -32,27 +32,21 @@ public class Home_Activity extends AppCompatActivity {
     private ListAppAdapter listUnBlockedAdapter;
     private TabLayout tabLayout;
     private Toolbar toolbar;
-    private ListAppAdapter.AdapterCallBack callBack = new ListAppAdapter.AdapterCallBack() {
+    private ListAppAdapter.AdapterComunication callBack = new ListAppAdapter.AdapterComunication() {
         @Override
-        public void onUnBlockedApp(String packageName) {
+        public void onChangeStateApp(AppInfo app) {
 
-            AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
-            listBlockedAppAdapter.remove(appInfo);
-            listUnBlockedAdapter.add(appInfo);
-            installedApps.unblockApp(appInfo);
+            if(app.isBlocked()){
 
-        }
+                listBlockedAppAdapter.add(app);
 
-        @Override
-        public void onBlockedApp(String packageName) {
+            }else {
 
-            AppInfo appInfo = AppInfo.getAppInfoByPackageName(Home_Activity.this, packageName);
-            listBlockedAppAdapter.add(appInfo);
-            listUnBlockedAdapter.remove(appInfo);
-            installedApps.blockApp(appInfo);
-
+                listUnBlockedAdapter.add(app);
+            }
         }
     };
+
 
 
 

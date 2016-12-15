@@ -29,15 +29,16 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     public static final int ONLY_BLOKED = 0;
     public static final int ONLY_UNBLOKED = 1;
     public static final int ALL_APP = 2;
-    public AdapterCallBack callBack;
-    public interface AdapterCallBack{
+    private AdapterComunication callBack;
 
-        void onUnBlockedApp(String packageName);
+    public interface AdapterComunication{
 
-        void onBlockedApp(String packageName);
+        void onChangeStateApp(AppInfo app);
     }
 
-    public ListAppAdapter(Context context, ArrayList<AppInfo> dataList, AdapterCallBack callBack) {
+
+
+    public ListAppAdapter(Context context, ArrayList<AppInfo> dataList, AdapterComunication callBack) {
         super(context, R.layout.item_list_app, new ArrayList<AppInfo>(dataList));
 
         this.context = context;
@@ -114,6 +115,8 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
 
     }
 
+
+
     private void showDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setTitle(R.string.non_permissions_dialog);
@@ -137,18 +140,25 @@ public class ListAppAdapter extends ArrayAdapter<AppInfo> {
     private void clickEvent(int position){
 
         AppInfo appInfo = getItem(position);
+        InstalledApps installedtApps = InstalledApps.getInstance(context);
         appInfo.setBlocked(!appInfo.isBlocked());
+        remove(appInfo);
+
+        if(appInfo.isBlocked()){
+
+            installedtApps.blockApp(appInfo);
+
+        }else {
+
+            installedtApps.unblockApp(appInfo);
+        }
+
         if(callBack != null){
 
-           if(appInfo.isBlocked()){
-
-               callBack.onBlockedApp(appInfo.getPackageName());
-
-           }else {
-
-               callBack.onUnBlockedApp(appInfo.getPackageName());
-           }
+            callBack.onChangeStateApp(appInfo);
         }
+
+
     }
 
     //Instance Methods

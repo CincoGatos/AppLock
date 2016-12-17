@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cincogatos.com.applock">
 
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />

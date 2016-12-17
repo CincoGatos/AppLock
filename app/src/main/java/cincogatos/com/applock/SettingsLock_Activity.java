@@ -21,4 +21,10 @@ public class SettingsLock_Activity extends AppLockActivity {
     public void onPinSuccess(int attempts) {
         finish();
     }
+
+    @Override
+    public int getContentView() {
+        //return super.getContentView();
+        return R.layout.custom_applock_activity;
+    }
 }
